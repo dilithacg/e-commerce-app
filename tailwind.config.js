@@ -2,8 +2,11 @@
 module.exports = {
   content: ["./App.{js,jsx,ts,tsx}", "./Apps/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      textAlign: {
+        justify: "justify",
+      },
+    },
   },
   plugins: [],
-}
-
+};

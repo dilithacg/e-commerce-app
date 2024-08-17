@@ -1,10 +1,10 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "../Screens/HomeScreen";
 import CartScreen from "../Screens/CartScreen";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Feather from "@expo/vector-icons/Feather";
+import HomeScreenStackNav from "./HomeScreenStackNav";
 
 const Tab = createBottomTabNavigator();
 
@@ -16,8 +16,8 @@ export default function TabNavigation() {
       }}
     >
       <Tab.Screen
-        name="home"
-        component={HomeScreen}
+        name="home-nav"
+        component={HomeScreenStackNav}
         options={{
           headerShown: false,
           tabBarLabel: ({ color }) => (
