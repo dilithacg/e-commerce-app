@@ -1,7 +1,6 @@
 import { View, Text, ActivityIndicator, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import Header from "../Components/HomeScreen/Header";
-import LatestItemList from "../Components/HomeScreen/LatestItemList";
 import PostedItem from "../Components/HomeScreen/postItem";
 
 export default function HomeScreen() {
@@ -49,6 +48,9 @@ export default function HomeScreen() {
       numColumns={2}
       columnWrapperStyle={{ justifyContent: "space-between" }}
       renderItem={({ item }) => <PostedItem item={item} />}
+      overScrollMode="never"
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
     />
   );
 }

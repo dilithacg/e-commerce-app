@@ -12,10 +12,10 @@ export default function ProductDetail() {
       : "No sizes available";
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false} overScrollMode="never">
       <Image source={{ uri: product.mainImage }} className="h-[320px] w-full" />
 
-      <View className="p-3">
+      <View className="p-3 bg-white">
         <Text className="text-[20px] font-bold">{product.name}</Text>
         <View className="flex-row">
           <Text className="text-[17px] m-1 text-red-500 font-extrabold">
