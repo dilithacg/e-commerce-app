@@ -5,6 +5,7 @@ import CartScreen from "../Screens/CartScreen";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Feather from "@expo/vector-icons/Feather";
 import HomeScreenStackNav from "./HomeScreenStackNav";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
 const Tab = createBottomTabNavigator();
 
@@ -18,7 +19,8 @@ export default function TabNavigation() {
       <Tab.Screen
         name="home-nav"
         component={HomeScreenStackNav}
-        options={{
+        options={({ route }) => ({
+          tabBarStyle: { display: getRoutName(route) },
           headerShown: false,
           tabBarLabel: ({ color }) => (
             <Text style={{ color: color, fontSize: 13, marginBottom: 3 }}>
@@ -28,7 +30,7 @@ export default function TabNavigation() {
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="home" size={size} color={color} />
           ),
-        }}
+        })}
       />
       <Tab.Screen
         name="cart"
@@ -48,3 +50,11 @@ export default function TabNavigation() {
     </Tab.Navigator>
   );
 }
+const getRoutName = (route) => {
+  const routeName = getFocusedRouteNameFromRoute(route);
+  console.log(routeName);
+  if (routeName?.includes("productdetail")) {
+    return "none";
+  }
+  return "flex";
+};

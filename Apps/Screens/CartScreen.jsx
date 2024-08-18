@@ -100,7 +100,9 @@ export default function CartScreen() {
       />
       <View className="flex-1 ml-4">
         <Text className="text-lg font-semibold">{item.name}</Text>
-        <Text className="text-gray-500">Brand: {item.brandName}</Text>
+        <Text className="text-gray-500">
+          Brand: {item.brandName ? item.brandName : "No Brand"}
+        </Text>
         <Text className="text-gray-500">
           {item.price.currency}
           {item.price.amount}
