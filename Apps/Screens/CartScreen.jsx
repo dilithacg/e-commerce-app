@@ -9,48 +9,24 @@ import {
 import React, { useState, useEffect } from "react";
 import Checkbox from "expo-checkbox";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useSelector, useDispatch } from "react-redux";
+import { removeFromCart } from "../../Redux/slices/cartSlice"; // Import the removeFromCart action
 
 export default function CartScreen() {
-  const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedItems, setSelectedItems] = useState({});
   const [selectAll, setSelectAll] = useState(false);
+  const cartItems = useSelector((state) => state.cart.items);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    // Fetch data from the API
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://s3-eu-west-1.amazonaws.com/api.themeshplatform.com/products.json"
-        );
-        const data = await response.json();
-
-        // Initialize the cart with data from the API, adding a default quantity of 1
-        const cartItems = data.data.map((item) => ({
-          id: item.id,
-          SKU: item.SKU,
-          name: item.name,
-          brandName: item.brandName,
-          mainImage: item.mainImage,
-          price: item.price,
-          currency: item.price,
-          quantity: 1, // Default quantity
-        }));
-
-        setCart(cartItems);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+    // Simulate loading time
+    setLoading(false);
   }, []);
 
-  // Function to remove a product from the cart
-  const removeFromCart = (productId) => {
-    setCart(cart.filter((item) => item.id !== productId));
+  // Function to remove a product from the cart using Redux
+  const handleRemoveFromCart = (productId) => {
+    dispatch(removeFromCart(productId));
     setSelectedItems((prevSelected) => {
       const { [productId]: _, ...rest } = prevSelected;
       return rest;
@@ -70,7 +46,7 @@ export default function CartScreen() {
     if (selectAll) {
       setSelectedItems({});
     } else {
-      const allSelected = cart.reduce((acc, item) => {
+      const allSelected = cartItems.reduce((acc, item) => {
         acc[item.id] = true;
         return acc;
       }, {});
@@ -80,7 +56,7 @@ export default function CartScreen() {
   };
 
   // Calculate the total price of selected items
-  const total = cart.reduce(
+  const total = cartItems.reduce(
     (sum, item) =>
       selectedItems[item.id]
         ? sum + parseFloat(item.price.amount) * item.quantity
@@ -117,7 +93,7 @@ export default function CartScreen() {
       </View>
 
       <TouchableOpacity
-        onPress={() => removeFromCart(item.id)}
+        onPress={() => handleRemoveFromCart(item.id)}
         className="absolute bottom-2 right-2 flex-row items-center p-[3px] bg-red-500 rounded-full"
       >
         <MaterialIcons name="delete" size={24} color="white" />
@@ -140,12 +116,14 @@ export default function CartScreen() {
       </View>
       <View className="flex-row items-center mb-4 mt-9 ">
         <Checkbox value={selectAll} onValueChange={handleSelectAll} />
-        <Text className="ml-2 text-lg font-semibold">Select All</Text>
+        <Text className="ml-2 text-lg font-semibold">
+          {selectAll ? "Deselect All" : "Select All"}
+        </Text>
       </View>
 
-      {cart.length > 0 ? (
+      {cartItems.length > 0 ? (
         <FlatList
-          data={cart}
+          data={cartItems}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
           overScrollMode="never"
@@ -157,7 +135,7 @@ export default function CartScreen() {
       )}
 
       <View className="mt-2 mb-2 ">
-        <Text className="text-xl font-bold">Total:GBP {total.toFixed(2)}</Text>
+        <Text className="text-xl font-bold">Total: GBP {total.toFixed(2)}</Text>
       </View>
       <TouchableOpacity>
         <View className="p-[15px] bg-red-600 ml-3 mr-3 mb-2 px-2 rounded-md">

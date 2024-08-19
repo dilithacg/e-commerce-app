@@ -8,11 +8,14 @@ import {
 } from "react-native";
 import { useState, useEffect } from "react";
 import { useRoute } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../Redux/slices/cartSlice";
 
 export default function ProductDetail() {
   const route = useRoute();
   const { product } = route.params;
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // Simulate loading time
@@ -29,6 +32,11 @@ export default function ProductDetail() {
       </View>
     );
   }
+
+  const handleAddToCart = () => {
+    console.log("Adding to cart:", product); // Log to ensure correct item
+    dispatch(addToCart({ ...product, quantity: 1 }));
+  };
 
   const sizeString =
     product.sizes && product.sizes.length > 0
@@ -98,7 +106,10 @@ export default function ProductDetail() {
             Buy Now
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity className="bg-white flex-1 rounded-md p-3 ml-2 border border-red-600">
+        <TouchableOpacity
+          className="bg-white flex-1 rounded-md p-3 ml-2 border border-red-600"
+          onPress={handleAddToCart}
+        >
           <Text className="text-center text-red-600 text-[17px] font-semibold">
             Add To Cart
           </Text>
