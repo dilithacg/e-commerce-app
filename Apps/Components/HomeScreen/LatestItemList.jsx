@@ -8,6 +8,7 @@ export default function LatestItemList({ latestItemList }) {
       <Text>ItemList</Text>
       <FlatList
         data={latestItemList}
+        contentContainerStyle={{ paddingBottom: 120 }}
         numColumns={2}
         renderItem={({ item }) => <PostedItem item={item} />}
       />

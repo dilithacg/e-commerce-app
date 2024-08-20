@@ -18,7 +18,7 @@ export default function ProductDetail() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Simulate loading time
+    //loading time
     const timer = setTimeout(() => {
       setLoading(false);
     }, 500);
@@ -34,7 +34,7 @@ export default function ProductDetail() {
   }
 
   const handleAddToCart = () => {
-    console.log("Adding to cart:", product); // Log to ensure correct item
+    console.log("Adding to cart:", product);
     dispatch(addToCart({ ...product, quantity: 1 }));
   };
 
@@ -88,13 +88,15 @@ export default function ProductDetail() {
           </View>
           <View className="mt-2">
             <Text className="text-[18px] font-semibold">Available Sizes:</Text>
-            <Text className=" text-gray-500 text-[14px]">{sizeString}</Text>
+            <Text className="px-2 text-gray-500 text-[14px]">{sizeString}</Text>
           </View>
 
           <Text className="mt-3 font-semibold text-[18px]">Description:</Text>
-          <Text className="text-[17px] text-gray-500 text-justify">
-            {product.description}
-          </Text>
+          <View className="px-2 ">
+            <Text className="text-[17px] text-gray-500 text-justify">
+              {product.description}
+            </Text>
+          </View>
           <Text className="text-[17px] text-gray-500 text-justify">
             SKU: {product.SKU}
           </Text>

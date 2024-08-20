@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator, FlatList } from "react-native";
+import { View, Text, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import Header from "../Components/HomeScreen/Header";
 import PostedItem from "../Components/HomeScreen/postItem";
@@ -51,6 +51,7 @@ export default function HomeScreen() {
       overScrollMode="never"
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
+      contentContainerStyle={{ paddingBottom: 40 }}
     />
   );
 }

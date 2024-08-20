@@ -10,7 +10,7 @@ import React, { useState, useEffect } from "react";
 import Checkbox from "expo-checkbox";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useSelector, useDispatch } from "react-redux";
-import { removeFromCart } from "../../Redux/slices/cartSlice"; // Import the removeFromCart action
+import { removeFromCart, updateQuantity } from "../../Redux/slices/cartSlice"; // Import the removeFromCart action
 
 export default function CartScreen() {
   const [loading, setLoading] = useState(true);
@@ -20,11 +20,10 @@ export default function CartScreen() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Simulate loading time
     setLoading(false);
   }, []);
 
-  // Function to remove a product from the cart using Redux
+  // Func remove a product from the cart using Redux
   const handleRemoveFromCart = (productId) => {
     dispatch(removeFromCart(productId));
     setSelectedItems((prevSelected) => {
@@ -41,7 +40,7 @@ export default function CartScreen() {
     }));
   };
 
-  // Handle select all
+  // select all
   const handleSelectAll = () => {
     if (selectAll) {
       setSelectedItems({});
@@ -55,7 +54,7 @@ export default function CartScreen() {
     setSelectAll(!selectAll);
   };
 
-  // Calculate the total price of selected items
+  // Calculate the total price
   const total = cartItems.reduce(
     (sum, item) =>
       selectedItems[item.id]
@@ -63,8 +62,23 @@ export default function CartScreen() {
         : sum,
     0
   );
+  // Func to increase the quantity
+  const handleIncreaseQuantity = (itemId) => {
+    const item = cartItems.find((item) => item.id === itemId);
+    if (item) {
+      dispatch(updateQuantity({ id: itemId, quantity: item.quantity + 1 }));
+    }
+  };
 
-  // Render function for each item in the cart
+  // Func to decrease the quantity
+  const handleDecreaseQuantity = (itemId) => {
+    const item = cartItems.find((item) => item.id === itemId);
+    if (item && item.quantity > 1) {
+      dispatch(updateQuantity({ id: itemId, quantity: item.quantity - 1 }));
+    }
+  };
+
+  // Render item in the cart
   const renderItem = ({ item }) => (
     <View
       key={item.id}
@@ -83,7 +97,23 @@ export default function CartScreen() {
           {item.price.currency}
           {item.price.amount}
         </Text>
-        <Text className="text-gray-500">Quantity: {item.quantity}</Text>
+        <View className="flex-row items-center mt-2">
+          <TouchableOpacity
+            onPress={() => handleDecreaseQuantity(item.id)}
+            className="w-6 h-6 bg-gray-300 rounded-full justify-center items-center"
+          >
+            <Text className="text-sm font-bold ">-</Text>
+          </TouchableOpacity>
+
+          <Text className="text-gray-500 mx-4">Quantity: {item.quantity}</Text>
+
+          <TouchableOpacity
+            onPress={() => handleIncreaseQuantity(item.id)}
+            className="w-6 h-6 bg-gray-300 rounded-full justify-center items-center"
+          >
+            <Text className="text-sm font-bold">+</Text>
+          </TouchableOpacity>
+        </View>
       </View>
       <View className="flex-grow-1 items-center mt-2 absolute top-1 right-2">
         <Checkbox
